@@ -15,6 +15,7 @@ import Image from "next/image";
 import { Activity } from "react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
+import { UserResource } from "@clerk/types";
 
 interface ProfileHeaderProps {
   userStats: {
