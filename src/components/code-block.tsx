@@ -2,7 +2,6 @@ import SyntaxHighlighter from "react-syntax-highlighter";
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import CopyBtn from "../app/snippets/[id]/_components/copy-btn";
 import Image from "next/image";
-import EditBtn from "@/components/edit-btn";
 
 export default function CodeBlock({
   language,
