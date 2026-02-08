@@ -1,50 +1,42 @@
 "use client";
 
 import { useQuery } from "convex/react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
 import SnippetLoadingSkeleton from "./_components/snippet-loading-skeleton";
 import Image from "next/image";
-import { Clock, Edit, MessageSquare, User } from "lucide-react";
+import { Clock, MessageSquare, User } from "lucide-react";
 import { defineMonacoThemes, LANGUAGE_CONFIG } from "@/constants";
 import { Editor } from "@monaco-editor/react";
 import CopyBtn from "./_components/copy-btn";
 import { useEditorStore } from "@/store/useEditorStore";
-import { useState } from "react";
 import Comments from "./_components/comments";
-import { useUser } from "@clerk/nextjs";
 import toast from "react-hot-toast";
-import SaveButton from "@/components/save-btn";
 
 export default function SnippetsDetailsPage() {
-  const { user } = useUser();
-
   const snippetId = useParams().id;
   const theme = useEditorStore((state) => state.theme);
   const fontSize = useEditorStore((state) => state.fontSize);
-
-  const [isEditable, setIsEditable] = useState<boolean | undefined>(true);
+  const router = useRouter();
 
   const snippet = useQuery(api.snippets.getSippetById, {
     snippetId: snippetId as Id<"snippets">,
   });
+  console.log(snippet);
+  if (snippet === undefined) {
+    toast.error("Snippet not found");
+    router.back();
+  }
+
   const comments = useQuery(api.snippets.getSnippetsComments, {
     snippetId: snippetId as Id<"snippets">,
   });
 
-  const handleIsEditable = () => {
-    if (user) {
-      setIsEditable((state) => !state);
-    } else {
-      toast.error("Login required");
-    }
-  };
-
   if (snippet === undefined) return <SnippetLoadingSkeleton />;
 
   return (
-    <main className="max-w-300 mx-auto px-5 py-4">
+    <main className="max-w-300 mx-auto py-4">
       <div className="mb-6">
         <h1 className="text-xl font-semibold text-white mb-1">
           {snippet.title}
@@ -78,15 +70,7 @@ export default function SnippetsDetailsPage() {
               />
             </div>
             <div className="flex gap-3 items-center">
-              <button
-                onClick={handleIsEditable}
-                className="flex items-center gap-1.5 p-2 text-xs text-gray-400 hover:text-gray-300 bg-[#1e1e2e] 
-                  rounded-lg ring-1 ring-gray-800/50 hover:ring-gray-700/50 transition-all"
-              >
-                <Edit className="size-4" />
-              </button>
               <CopyBtn code={snippet.code} />
-              {!isEditable && <SaveButton />}
             </div>
           </div>
           <Editor
@@ -98,7 +82,7 @@ export default function SnippetsDetailsPage() {
             options={{
               minimap: { enabled: false },
               fontSize,
-              readOnly: isEditable,
+              readOnly: true,
               automaticLayout: true,
               scrollBeyondLastLine: false,
               padding: { top: 16 },
