@@ -10,6 +10,7 @@ import {
   UserIcon,
   Zap,
   Activity,
+  Sparkles,
 } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
@@ -90,11 +91,11 @@ export default function ProfileHeader({
   ];
   return (
     <div
-      className="relative mb-8 bg-linear-to-br from-[#12121a] to-[#1a1a2e] rounded-2xl p-8 border
+      className="relative mb-8 bg-linear-to-br from-[#12121a] to-[#1a1a2e] rounded-2xl p-4 border
    border-gray-800/50 overflow-hidden"
     >
       <div className="absolute inset-0 bg-grid-white/[0.02] bg-size-[32px]" />
-      <div className="relative flex items-center gap-8">
+      <div className="relative flex items-center gap-3 sm:gap-6 md:gap-8">
         <div className="relative group">
           <div
             className="absolute inset-0 bg-linear-to-r from-blue-500 to-purple-600 rounded-full 
@@ -105,28 +106,26 @@ export default function ProfileHeader({
             alt="Profile"
             height={96}
             width={96}
-            className="w-24 h-24 rounded-full border-4 border-gray-800/50 relative z-10 group-hover:scale-105 transition-transform"
+            className="size-18 md:size-24 rounded-full border-4 border-gray-800/50 relative group-hover:scale-105 transition-transform"
           />
           {userData.isPro && (
             <div
-              className="absolute -top-2 -right-2 bg-linear-to-r from-purple-500 to-purple-600 p-2
-           rounded-full z-20 shadow-lg animate-pulse"
+              className="absolute -top-1 -right-1 bg-linear-to-r from-purple-500 to-purple-600 p-2
+           rounded-full z-1 shadow-lg"
             >
-              <Zap className="w-4 h-4 text-white" />
+              <div className="flex gap-2 items-center">
+                <Sparkles className="size-4" />
+              </div>
             </div>
           )}
         </div>
         <div>
-          <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-3xl font-bold text-white">{userData.name}</h1>
-            {userData.isPro && (
-              <span className="px-3 py-1 bg-purple-500/10 text-purple-400 rounded-full text-sm font-medium">
-                Pro Member
-              </span>
-            )}
+          <div className="flex items-center gap-3 mb-1 sm:mb-2">
+            <h1 className="text-lg sm:text-3xl font-bold text-white">
+              {userData.name}
+            </h1>
           </div>
-          <p className="text-gray-400 flex items-center gap-2">
-            <UserIcon className="w-4 h-4" />
+          <p className="text-gray-400 flex items-center gap-2 text-[14px]">
             {userData.email}
           </p>
         </div>

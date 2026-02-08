@@ -26,6 +26,7 @@ export default defineSchema({
     language: v.string(),
     code: v.string(),
     userName: v.string(), // store user's name for easy access
+    updatedAt: v.optional(v.number()),
   }).index("by_user_id", ["userId"]),
 
   snippetComments: defineTable({

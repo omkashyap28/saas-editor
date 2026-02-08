@@ -29,9 +29,9 @@ export default function OutputPanel() {
   };
 
   return (
-    <div className="relative w-full bg-[#181825] rounded-xl p-4 ring-1 ring-gray-800/50">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-6 mt-1">
+    <div className="w-full h-full flex flex-col min-h-0 bg-[#181825] rounded-xl p-4 ring-1 ring-gray-800/50">
+      {/* Header (fixed height) */}
+      <div className="flex items-center justify-between mb-6 mt-1 shrink-0">
         <div className="flex items-center gap-2">
           <div className="flex items-center justify-center w-6 h-6 rounded-lg bg-[#1e1e2e] ring-1 ring-gray-800/50">
             <Terminal className="w-4 h-4 text-blue-400" />
@@ -59,9 +59,9 @@ export default function OutputPanel() {
         )}
       </div>
 
-      {/* Output Area */}
-      <div className="relative h-[70vh]">
-        <div className="relative bg-[#1e1e2e]/50 backdrop-blur-sm border border-[#313244] rounded-xl p-4 h-full overflow-auto font-mono text-sm">
+      {/* Scrollable Output Area */}
+      <div className="flex-1 min-h-0">
+        <div className="bg-[#1e1e2e]/50 backdrop-blur-sm border border-[#313244] rounded-xl p-4 h-full overflow-auto font-mono text-sm">
           {isRunning ? (
             <RunningCodeSkeleton />
           ) : error ? (

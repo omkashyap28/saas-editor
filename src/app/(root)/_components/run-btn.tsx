@@ -7,13 +7,18 @@ import { Loader2, Play } from "lucide-react";
 import { motion } from "motion/react";
 import { api } from "../../../../convex/_generated/api";
 
-export default function RunButton() {
+export default function RunButton({
+  setActive,
+}: {
+  setActive: (active: "editor" | "output") => void;
+}) {
   const { user } = useUser();
   const runCode = useEditorStore((state) => state.runCode);
   const language = useEditorStore((state) => state.language);
   const isRunning = useEditorStore((state) => state.isRunning);
   const saveExecution = useMutation(api.codeExecutions.saveExecution);
   const handleRun = async () => {
+    setActive("output");
     await runCode();
     const result = getExecutionResult();
     if (user && result) {

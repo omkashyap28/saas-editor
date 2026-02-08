@@ -12,22 +12,15 @@ import { Editor } from "@monaco-editor/react";
 import CopyBtn from "./_components/copy-btn";
 import { useEditorStore } from "@/store/useEditorStore";
 import Comments from "./_components/comments";
-import toast from "react-hot-toast";
 
 export default function SnippetsDetailsPage() {
   const snippetId = useParams().id;
   const theme = useEditorStore((state) => state.theme);
   const fontSize = useEditorStore((state) => state.fontSize);
-  const router = useRouter();
 
   const snippet = useQuery(api.snippets.getSippetById, {
     snippetId: snippetId as Id<"snippets">,
   });
-  console.log(snippet);
-  if (snippet === undefined) {
-    toast.error("Snippet not found");
-    router.back();
-  }
 
   const comments = useQuery(api.snippets.getSnippetsComments, {
     snippetId: snippetId as Id<"snippets">,

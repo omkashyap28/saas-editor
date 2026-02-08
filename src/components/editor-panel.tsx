@@ -5,20 +5,22 @@ import { useClerk } from "@clerk/nextjs";
 import { Editor } from "@monaco-editor/react";
 import { RotateCcwIcon } from "lucide-react";
 import { motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { EditorPanelSkeleton } from "./editor-panel-skeleton";
 import useMounted from "@/hooks/useMounted";
-import ShareSnippetDialog from "../app/(root)/_components/share-snippet-dialog";
 import SettingDialogueBox from "../app/(root)/_components/settings-dialoge-box";
 import LanguageSelector from "@/app/(root)/_components/language-selector";
 import useConvexUser from "@/hooks/getConvexUser";
 import RunButton from "@/app/(root)/_components/run-btn";
 import ShareButton from "./share-btn";
 
-export default function EditorPanel() {
+export default function EditorPanel({
+  setActive,
+}: {
+  setActive: (active: "editor" | "output") => void;
+}) {
   const clerk = useClerk();
 
-  const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const mounted = useMounted();
   const language = useEditorStore((state) => state.language);
   const fontSize = useEditorStore((state) => state.fontSize);
@@ -46,16 +48,15 @@ export default function EditorPanel() {
 
   if (!mounted) return null;
   return (
-    <div className="relative w-full">
-      <div className="relative bg-[#12121a]/90 backdrop-blur rounded-xl border border-white/5 py-4 sm:px-4">
+    <div className="w-full h-full flex flex-col min-h-0">
+      <div className="relative bg-[#12121a]/90 backdrop-blur rounded-xl border border-white/5 py-4 sm:px-4 flex flex-col flex-1 min-h-0">
         {/* Header */}
-        <div className="flex items-center justify-between mb-4 max-sm:px-4">
+        <div className="flex items-center justify-between mb-4 max-sm:px-4 shrink-0">
           <div className="flex items-center gap-3">
-            <LanguageSelector hasAccess={convexUser.isPro} />
+            <LanguageSelector hasAccess={convexUser?.isPro} />
           </div>
-          <div className="flex items-center gap-3">
-            {/* Font Size Slider */}
 
+          <div className="flex items-center gap-3">
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
@@ -65,22 +66,23 @@ export default function EditorPanel() {
             >
               <RotateCcwIcon className="size-4 text-gray-400" />
             </motion.button>
+
             <ShareButton />
             <SettingDialogueBox />
-            <RunButton />
+            <RunButton setActive={setActive} />
           </div>
         </div>
 
-        {/* Editor  */}
-        <div className="relative h-[70vh] group rounded-xl overflow-hidden ring-1 ring-white/5">
-          {clerk.loaded && (
+        {/* Editor Container */}
+        <div className="flex-1 min-h-0 rounded-xl overflow-hidden ring-1 ring-white/5">
+          {clerk.loaded ? (
             <Editor
-              height={"100%"}
+              height="100%"
               language={LANGUAGE_CONFIG[language].monacoLanguage}
-              onChange={handleEditorChange}
               theme={theme}
               beforeMount={defineMonacoThemes}
               onMount={(editor) => setEditor(editor)}
+              onChange={handleEditorChange}
               options={{
                 minimap: { enabled: false },
                 fontSize,
@@ -104,9 +106,9 @@ export default function EditorPanel() {
                 },
               }}
             />
+          ) : (
+            <EditorPanelSkeleton />
           )}
-
-          {!clerk.loaded && <EditorPanelSkeleton />}
         </div>
       </div>
     </div>

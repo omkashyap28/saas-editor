@@ -69,7 +69,7 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0f]">
-      <div className="max-w-7xl mx-auto px-4 py-12">
+      <div className="max-w-7xl mx-auto py-12">
         {/* Profile Header */}
 
         {userStats && userData && (
@@ -130,11 +130,11 @@ export default function ProfilePage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
-              className="p-6"
+              className="px-4 py-6"
             >
               {/* ACTIVE TAB IS EXECUTIONS: */}
               {activeTab === "executions" && (
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   {executions?.map((execution) => (
                     <div
                       key={execution._id}

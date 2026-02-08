@@ -51,6 +51,38 @@ export const getSippetById = query({
   },
 });
 
+export const editSnippetById = mutation({
+  args: {
+    snippetId: v.id("snippets"),
+    code: v.string(),
+  },
+
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    const snippet = await ctx.db.get(args.snippetId);
+
+    if (!snippet) {
+      throw new Error("Snippet not found");
+    }
+    if (snippet.userId !== identity.subject) {
+      throw new Error("Unauthorized");
+    }
+
+    await ctx.db.patch(args.snippetId, {
+      _id: args.snippetId,
+      code: args.code,
+      updatedAt: Date.now(),
+    });
+
+    return { success: true };
+  },
+});
+
 export const isStarred = query({
   args: {
     snippetId: v.id("snippets"),
