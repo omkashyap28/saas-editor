@@ -1,14 +1,17 @@
 # Code Snippets
+
 A place where developers create and share their code-snippets with others. 
 
 ## Why code-snippets ?
+
 1. It support many popular programming languages.
 2. User friendly UI and easy to use.
 3. Free to use and open source.
 
 ## Tech Stacks 
+
 | Technologies | Description                 |
-|--------------------------------------------|
+|--------------|-----------------------------|
 | Nextjs       | For handling backend        |
 | Clerk        | For handling Authentication |
 | Convex       | Database for storage        |
@@ -17,6 +20,7 @@ A place where developers create and share their code-snippets with others.
 
 ______________________________________________
 ## This is open source and anyone can use it.
+
 Follow instructions to clone it :-
 1. Clone project
 ```bash
